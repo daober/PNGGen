@@ -8,7 +8,9 @@ Pixel = Tuple[int, int, int]
 
 HEADER = b'\x89PNG\r\n\x1A\n'          # 4-byte length field; 4-byte chunk type field; data, 4-byte checksum
 BLACK_PIXEL: Pixel = (0, 0, 0)
-WHITE_PIXEL: Pixel = (255,255,255)
+WHITE_PIXEL: Pixel = (255, 255, 255)
+BLACK_PIXEL_ALPHA : Pixel = (0, 0, 0, 255)
+WHITE_PIXEL_ALPHA: Pixel = (255, 255, 255, 255)
 
 #from PNG SPEC
 #NOTE: only 'TRUECOLOUR' && 'TRUECOLOUR_WITH_ALPHA' important for now
@@ -99,7 +101,7 @@ class PNGGenerator(object):
             return 1
 
     @classmethod
-    def generate_checkerboard_imagedata(cls, width: int, height: int, cell_size: int = 10) -> Image:
+    def generate_checkerboard_imagedata(cls, width: int, height: int, png_type: PNGType, cell_size: int = 10) -> Image:
         image = []
         length_one_square = height / cell_size
         length_two_squares = height / cell_size * 2
@@ -109,14 +111,26 @@ class PNGGenerator(object):
             if (i % length_two_squares) >= length_one_square:
                 for j in range(width):
                     if (j % length_two_squares) < length_one_square:
-                        row.append(WHITE_PIXEL)
+                        if png_type == PNGType.TRUECOLOUR:
+                            row.append(WHITE_PIXEL)
+                        elif png_type == PNGType.TRUECOLOUR_WITH_ALPHA:
+                            row.append(WHITE_PIXEL_ALPHA)
                     else:
-                        row.append(BLACK_PIXEL)
+                        if png_type == PNGType.TRUECOLOUR:
+                            row.append(BLACK_PIXEL)
+                        elif png_type == PNGType.TRUECOLOUR_WITH_ALPHA:
+                            row.append(BLACK_PIXEL_ALPHA)
             else:
                 for j in range(width):
                     if ( j % length_two_squares) >= length_one_square:
-                        row.append(WHITE_PIXEL)
+                        if png_type == PNGType.TRUECOLOUR:
+                            row.append(WHITE_PIXEL)
+                        elif png_type == PNGType.TRUECOLOUR_WITH_ALPHA:
+                            row.append(WHITE_PIXEL_ALPHA)
                     else:
-                        row.append(BLACK_PIXEL)
+                        if png_type == PNGType.TRUECOLOUR:
+                            row.append(BLACK_PIXEL)
+                        elif png_type == PNGType.TRUECOLOUR_WITH_ALPHA:
+                            row.append(BLACK_PIXEL_ALPHA)   
             image.append(row)
         return image

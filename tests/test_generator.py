@@ -10,12 +10,12 @@ class GeneratorTest(unittest.TestCase):
         self.filepath_rgba = os.path.join('test_out', 'checkboard_example_rgba.png')
 
     def test_rgb_png(self):
-        image_data = PNGGenerator.generate_checkerboard_imagedata(1024, 768, 15)
+        image_data = PNGGenerator.generate_checkerboard_imagedata(1024, 768, PNGType.TRUECOLOUR, 15)
         self.assertGreater(len(image_data), 0)
         self.assertEqual(0, PNGGenerator.save_png(image_data, PNGType.TRUECOLOUR, self.filepath_rgb))
 
     def test_rgba_png(self):
-        image_data = PNGGenerator.generate_checkerboard_imagedata(1024, 768, 15)
+        image_data = PNGGenerator.generate_checkerboard_imagedata(1024, 768, PNGType.TRUECOLOUR_WITH_ALPHA, 15)
         self.assertGreater(len(image_data), 0)
         self.assertEqual(0, PNGGenerator.save_png(image_data, PNGType.TRUECOLOUR_WITH_ALPHA, self.filepath_rgba))
         
